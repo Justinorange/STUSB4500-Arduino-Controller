@@ -1,228 +1,225 @@
-/**
- * @file STUSB4500_Controller.ino
- * @brief Arduino sketch to control the STUSB4500 USB PD Sink Controller.
- * @details This code allows a user to select a USB Power Delivery voltage profile (5, 9, 12, 15, or 20V)
- * via the Serial Monitor. It uses a polling mechanism over I2C to check for status updates,
- * removing the need for the ALERT interrupt pin.
- *
- * Hardware Connections:
- * - Arduino Nano D4 (SDA) -> STUSB4500 SDA
- * - Arduino Nano D5 (SCL) -> STUSB4500 SCL
- * - Arduino Nano GND     -> STUSB4500 GND
- * - Arduino Nano 5V      -> Pull-up resistors for SDA & SCL (e.g., 4.7k ohm)
- *
- * The STUSB4500's ADDR0 and ADDR1 pins should be connected to GND to use the default I2C address 0x28.
- * The STUSB4500's RESET pin should be pulled high (to 3.3V or 5V).
- *
- * Based on the STUSB4500 datasheet and AN5225 Application Note.
- */
+/*
+  STUSB4500 USB PD Voltage Controller for Arduino Nano
+
+  This sketch communicates with the STUSB4500 USB PD controller chip
+  over I2C to change the negotiated power profile (voltage).
+
+  Hardware Setup:
+  - Arduino Nano
+  - STUSB4500 Breakout Board
+  - Arduino A4 (SDA) -> STUSB4500 SDA
+  - Arduino A5 (SCL) -> STUSB4500 SCL
+  - Arduino D2 -> STUSB4500 ALERT
+  - Arduino GND -> STUSB4500 GND
+  - Arduino 5V -> STUSB4500 VDD (if not powered from VBUS)
+  - Ensure necessary pull-up resistors are in place for I2C lines and ALERT.
+
+  How to Use:
+  1. Upload this code to your Arduino Nano.
+  2. Open the Serial Monitor (baud rate: 9600).
+  3. Type one of the following commands and press Enter:
+     - '5' to request 5V
+     - '9' to request 9V
+     - '12' to request 12V
+     - '15' to request 15V
+     - '20' to request 20V
+  4. The STUSB4500 will then negotiate the requested voltage with the USB PD source.
+  5. The ALERT pin will signal when a new negotiation is complete or if an event occurs.
+*/
 
 #include <Wire.h>
 
-// The default I2C address for the STUSB4500 when ADDR pins are grounded.
-const uint8_t STUSB4500_ADDR = 0x28;
+// I2C address of the STUSB4500. Default is 0x28.
+// Can be 0x29, 0x2A, or 0x2B depending on ADDR0 and ADDR1 pins.
+#define STUSB4500_ADDRESS 0x28
 
-// --- STUSB4500 Register Map (from AN5225) ---
-const uint8_t REG_ALERT_STATUS_1      = 0x0C; // Interrupt status register 1
-const uint8_t REG_PORT_STATUS_0       = 0x16; // Port status register
-const uint8_t REG_RDO_STATUS_0        = 0x1D; // Negotiated RDO status LSB
-const uint8_t REG_RESET_CTRL          = 0x23; // Software Reset Control Register
-const uint8_t REG_SNK_PDO_NUM         = 0x54; // Number of Sink PDOs to advertise
-const uint8_t REG_SNK_PDO2_0          = 0x89; // Start address for Sink PDO2 (32-bit value)
+// STUSB4500 Register Addresses
+#define PDO_NUM_REG 0x70
+#define V_SNK_PDO2_REG 0x85
+#define V_SNK_PDO3_REG 0x87
 
-// --- Polling Timer ---
-unsigned long last_poll_time = 0;
-const long poll_interval = 500; // Check status every 500 ms
+// Digital pin connected to the STUSB4500's ALERT pin
+#define ALERT_PIN 2
 
-/**
- * @brief Initializes I2C and Serial communication.
- */
+// A volatile boolean flag to be used by the interrupt service routine
+volatile bool alert_flag = false;
+
 void setup() {
+  // Initialize Serial communication at 9600 baud
   Serial.begin(9600);
-  while (!Serial); // Wait for Serial Monitor to open
+  Serial.println("STUSB4500 Voltage Controller Initialized");
+  Serial.println("Enter a voltage (5, 9, 12, 15, or 20) to request a new power profile.");
 
+  // Initialize I2C communication
   Wire.begin();
 
-  Serial.println("--- STUSB4500 USB PD Controller (Polling Mode) ---");
-
-  // Check if the STUSB4500 is connected and responding.
-  Wire.beginTransmission(STUSB4500_ADDR);
-  if (Wire.endTransmission() != 0) {
-    Serial.println("Error: STUSB4500 not found on I2C bus!");
-    Serial.println("Please check wiring. Halting.");
-    while (1); // Stop execution
-  }
-  Serial.println("STUSB4500 detected successfully.");
-  Serial.println("Enter a voltage (5, 9, 12, 15, or 20) and press Enter to negotiate.");
-  Serial.println();
+  // Set the ALERT pin as an input with a pull-up resistor
+  pinMode(ALERT_PIN, INPUT_PULLUP);
+  // Attach an interrupt to the ALERT pin, to be triggered on a falling edge
+  attachInterrupt(digitalPinToInterrupt(ALERT_PIN), handleAlert, FALLING);
+  
+  // Initial soft reset of the STUSB4500 NVM to load default settings
+  // This helps ensure the chip is in a known state.
+  // Note: For production use, you would pre-program the NVM.
+  // This example dynamically changes PDOs in RAM.
+  i2cWrite(0x25, 0x01); // Trigger NVM read
+  delay(10); // Wait for NVM to load
 }
 
-/**
- * @brief Main loop to handle user input and poll for status changes.
- */
 void loop() {
-  // Check if the user has entered a command in the Serial Monitor.
+  // Check if there is data available to read from the serial port
   if (Serial.available() > 0) {
-    long voltage = Serial.parseInt();
-    
-    // Clear the serial buffer of any remaining characters (like newline)
-    while(Serial.read() != -1);
+    // Read the incoming integer
+    int target_voltage = Serial.parseInt();
 
-    if (voltage > 0) {
-      setVoltage(voltage);
+    // Process the command
+    switch (target_voltage) {
+      case 5:
+        Serial.println("Requesting 5V...");
+        setVoltage(5);
+        break;
+      case 9:
+        Serial.println("Requesting 9V...");
+        setVoltage(9);
+        break;
+      case 12:
+        Serial.println("Requesting 12V...");
+        setVoltage(12);
+        break;
+      case 15:
+        Serial.println("Requesting 15V...");
+        setVoltage(15);
+        break;
+      case 20:
+        Serial.println("Requesting 20V...");
+        setVoltage(20);
+        break;
+      default:
+        Serial.println("Invalid voltage. Please enter 5, 9, 12, 15, or 20.");
+        break;
     }
   }
 
-  // Periodically poll the device for status updates.
-  unsigned long current_millis = millis();
-  if (current_millis - last_poll_time >= poll_interval) {
-    last_poll_time = current_millis;
-    checkDeviceStatus();
-  }
-}
+  // If the alert flag was set by the ISR, print a message and reset it
+  if (alert_flag) {
+    // An alert can be for various reasons. We check the negotiated power data object (PDO)
+    // to see if the voltage contract has changed.
+    uint8_t pdo_index = i2cRead(RDO_REG_STATUS) & 0x0F; // Read Sink PDO number in use
 
+    int new_voltage = 0;
 
-/**
- * @brief Configures the STUSB4500 to request a specific voltage.
- * @param v The target voltage (5, 9, 12, 15, or 20).
- */
-void setVoltage(int v) {
-  Serial.print("Attempting to set voltage to ");
-  Serial.print(v);
-  Serial.println("V...");
+    switch (pdo_index) {
+      case 1: // PDO1 is always 5V
+        new_voltage = 5;
+        break;
+      case 2: // PDO2
+        {
+          // Read the 10-bit value from the register
+          uint16_t pdo2_val = i2cRead(V_SNK_PDO2_REG) | ((i2cRead(V_SNK_PDO2_REG + 1) & 0x03) << 8);
+          // Convert to volts (value * 50mV)
+          new_voltage = (int)((pdo2_val * 50L) / 1000L);
+        }
+        break;
+      case 3: // PDO3
+        {
+          // Read the 10-bit value from the register
+          uint16_t pdo3_val = i2cRead(V_SNK_PDO3_REG) | ((i2cRead(V_SNK_PDO3_REG + 1) & 0x03) << 8);
+          // Convert to volts (value * 50mV)
+          new_voltage = (int)((pdo3_val * 50L) / 1000L);
+        }
+        break;
+    }
 
-  // For 5V, we just advertise one PDO. The chip defaults to PDO1, which is always 5V.
-  if (v == 5) {
-    // Set number of advertised Sink PDOs to 1.
-    writeRegister(REG_SNK_PDO_NUM, 0b00);
-    Serial.println("Configured for 5V (default PDO1).");
-  } 
-  // For other voltages, we configure PDO2 and advertise two PDOs.
-  else if (v == 9 || v == 12 || v == 15 || v == 20) {
-    // The STUSB4500 uses a 32-bit format for each PDO.
-    // Bits [19:10]: Voltage in 50mV units
-    // Bits [9:0]: Current in 10mA units
-
-    // Calculate the 10-bit value for the voltage.
-    uint16_t voltage_val = (uint16_t)(v / 0.05);
-
-    // Set a default max current of 1.5A for the request.
-    // The source will provide the lowest current it can support at that voltage.
-    uint16_t current_val = (uint16_t)(1.5 / 0.01); // 150 -> 1.5A
-
-    // Construct the 32-bit PDO value. Other bits are left at 0 for simplicity.
-    uint32_t pdo_value = ((uint32_t)voltage_val << 10) | current_val;
-
-    // Write the 4 bytes of the PDO value to the PDO2 registers.
-    write4Bytes(REG_SNK_PDO2_0, pdo_value);
-
-    // Set the number of advertised Sink PDOs to 2 (PDO1 and our custom PDO2).
-    writeRegister(REG_SNK_PDO_NUM, 0b10);
-
-    Serial.print("Configured PDO2 for ");
-    Serial.print(v);
-    Serial.println("V @ 1.5A max.");
-  } else {
-    Serial.println("Invalid voltage. Please use 5, 9, 12, 15, or 20.");
-    return;
-  }
-
-  // Trigger a software reset to force the chip to re-read the configuration
-  // from its RAM registers and start a new negotiation with the source.
-  Serial.println("Sending soft reset to start negotiation...");
-  writeRegister(REG_RESET_CTRL, 0x01); // Set SW_RESET bit
-  delay(20); // Wait a moment for the reset to process
-}
-
-/**
- * @brief Polls the STUSB4500 and decodes status registers if an event has occurred.
- */
-void checkDeviceStatus() {
-  uint8_t status = readRegister(REG_ALERT_STATUS_1);
-
-  // If status is 0, no events have occurred since the last check.
-  if (status == 0) {
-    return;
-  }
-
-  Serial.println("\n--- Status Update ---");
-
-  // Bit 0: Port Attach/Detach Status Change
-  if (status & 0b00000001) {
-    // Check the ATTACHED_STATUS bit in the PORT_STATUS register
-    uint8_t port_status = readRegister(REG_PORT_STATUS_0);
-    if (port_status & 0x01) {
-      Serial.println("Status: Power source attached.");
+    if (new_voltage != 0 && new_voltage != currentNegotiatedVoltage) {
+      currentNegotiatedVoltage = new_voltage;
+      Serial.print("Negotiation successful. Voltage is now: ");
+      Serial.print(currentNegotiatedVoltage);
+      Serial.println("V");
     } else {
-      Serial.println("Status: Power source detached.");
+      Serial.println("Alert received from STUSB4500 (no voltage change or status update).");
     }
-  }
 
-  // Bit 5: Power Delivery Contract negotiation has completed (success or fail)
-  if (status & 0b00100000) {
-     // Read the RDO status register to see which PDO was negotiated
-     uint8_t pdo_status_lsb = readRegister(REG_RDO_STATUS_0);
-     uint8_t negotiated_pdo_num = (pdo_status_lsb & 0b01110000) >> 4;
-     
-     if (negotiated_pdo_num > 0) {
-        Serial.print("Status: PD Contract established. Active PDO is #");
-        Serial.println(negotiated_pdo_num);
-        Serial.println("-> Voltage negotiation successful!");
-     } else {
-        Serial.println("Status: PD Contract failed or is at default 5V.");
-     }
+    alert_flag = false;
   }
-  
-  Serial.println("----------------------\n");
-
-  // IMPORTANT: Clear the alert by writing the status value back to the register.
-  writeRegister(REG_ALERT_STATUS_1, status);
 }
 
-// --- I2C Helper Functions ---
+// Function to set the desired voltage by configuring the PDO profiles.
+// The STUSB4500 supports up to 3 Sink PDOs.
+// PDO1 is fixed at 5V. We will configure PDO2 and PDO3 to get other voltages.
+void setVoltage(int voltage) {
+  uint16_t pdo2_voltage = 0;
+  uint16_t pdo3_voltage = 0;
+  uint8_t num_pdos = 1; // Default is one PDO (5V)
 
-/**
- * @brief Writes a single byte to a specified register.
- * @param reg The register address.
- * @param value The byte to write.
- */
-void writeRegister(uint8_t reg, uint8_t value) {
-  Wire.beginTransmission(STUSB4500_ADDR);
+  // According to the datasheet, the voltage is programmed in 50mV steps.
+  // So, value = voltage / 0.05
+  uint16_t voltage_val = voltage / 0.05;
+
+  if (voltage == 5) {
+    // To request 5V, we just set the number of PDOs to 1.
+    // The STUSB4500 will then only negotiate the default 5V PDO.
+    num_pdos = 1;
+  } else {
+    // For other voltages, we will set them as PDO2 and make PDO3 a copy.
+    // This makes the negotiation more robust.
+    num_pdos = 3;
+    pdo2_voltage = voltage_val;
+    pdo3_voltage = voltage_val;
+  }
+  
+  // Write the voltage for PDO2 (registers 0x85 and 0x86)
+  i2cWrite(V_SNK_PDO2_REG, pdo2_voltage & 0xFF);
+  i2cWrite(V_SNK_PDO2_REG + 1, (pdo2_voltage >> 8) & 0x03);
+
+  // Write the voltage for PDO3 (registers 0x87 and 0x88)
+  i2cWrite(V_SNK_PDO3_REG, pdo3_voltage & 0xFF);
+  i2cWrite(V_SNK_PDO3_REG + 1, (pdo3_voltage >> 8) & 0x03);
+
+  // Set the number of active PDOs
+  // Bits 6-7 of register 0x70 control this.
+  // 0b00 or 0b01 -> 1 PDO
+  // 0b10 -> 2 PDOs
+  // 0b11 -> 3 PDOs
+  uint8_t pdo_num_val = 0;
+  if (num_pdos == 1) pdo_num_val = 0b01;
+  if (num_pdos == 2) pdo_num_val = 0b10;
+  if (num_pdos == 3) pdo_num_val = 0b11;
+  
+  uint8_t current_pdo_reg = i2cRead(PDO_NUM_REG);
+  current_pdo_reg &= 0x3F; // Clear bits 6-7
+  current_pdo_reg |= (pdo_num_val << 6);
+  i2cWrite(PDO_NUM_REG, current_pdo_reg);
+  
+  // After changing PDOs, we need to trigger a new negotiation.
+  // A soft reset is an effective way to do this.
+  i2cWrite(0x25, 0x01); // Send soft reset command
+  
+  Serial.print("Configuration sent for ");
+  Serial.print(voltage);
+  Serial.println("V. Awaiting negotiation...");
+}
+
+// Interrupt Service Routine for the ALERT pin
+void handleAlert() {
+  alert_flag = true;
+}
+
+// Helper function to write a byte to an I2C device register
+void i2cWrite(uint8_t reg, uint8_t data) {
+  Wire.beginTransmission(STUSB4500_ADDRESS);
   Wire.write(reg);
-  Wire.write(value);
+  Wire.write(data);
   Wire.endTransmission();
 }
 
-/**
- * @brief Reads a single byte from a specified register.
- * @param reg The register address.
- * @return The byte read from the register.
- */
-uint8_t readRegister(uint8_t reg) {
-  uint8_t value = 0;
-  Wire.beginTransmission(STUSB4500_ADDR);
+// Helper function to read a byte from an I2C device register
+uint8_t i2cRead(uint8_t reg) {
+  Wire.beginTransmission(STUSB4500_ADDRESS);
   Wire.write(reg);
-  Wire.endTransmission(false); // Send restart to keep connection active
-  
-  Wire.requestFrom(STUSB4500_ADDR, (uint8_t)1);
+  Wire.endTransmission(false); // Send a restart message, keeping the connection active
+  Wire.requestFrom(STUSB4500_ADDRESS, (uint8_t)1); // Request 1 byte from the specified register
   if (Wire.available()) {
-    value = Wire.read();
+    return Wire.read();
   }
-  return value;
+  return 0;
 }
-
-/**
- * @brief Writes four bytes (a 32-bit value) to sequential registers.
- * @param startReg The starting register address.
- * @param value The 32-bit value to write.
- */
-void write4Bytes(uint8_t startReg, uint32_t value) {
-  Wire.beginTransmission(STUSB4500_ADDR);
-  Wire.write(startReg);
-  Wire.write((uint8_t)(value & 0xFF));        // LSB
-  Wire.write((uint8_t)((value >> 8) & 0xFF));
-  Wire.write((uint8_t)((value >> 16) & 0xFF));
-  Wire.write((uint8_t)((value >> 24) & 0xFF)); // MSB
-  Wire.endTransmission();
-}
-
