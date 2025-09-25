@@ -2692,6 +2692,147 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Regulator_Linear:LM2937xT"
+			(pin_names
+				(offset 0.254)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U"
+				(at -3.81 3.175 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "LM2937xT"
+				(at 0 3.175 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" "Package_TO_SOT_THT:TO-220-3_Vertical"
+				(at 0 5.715 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+						(italic yes)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "http://www.ti.com/lit/ds/symlink/lm2937.pdf"
+				(at 0 -1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "500-mA Low Dropout Regulator, TO-220"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "Voltage Regulator Low Dropuout Positive LDO"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "TO?220*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "LM2937xT_0_1"
+				(rectangle
+					(start -5.08 1.905)
+					(end 5.08 -5.08)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "LM2937xT_1_1"
+				(pin power_in line
+					(at -7.62 0 0)
+					(length 2.54)
+					(name "VI"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 0 -7.62 90)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_out line
+					(at 7.62 0 180)
+					(length 2.54)
+					(name "VO"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Transistor_FET:AO3401A"
 			(pin_names
 				(hide yes)
@@ -3211,6 +3352,12 @@
 		(uuid "2ba39853-7e90-4538-a2f7-7785567e932b")
 	)
 	(junction
+		(at 252.73 22.86)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "38078159-6aa2-43f6-8cdd-a4effd6717a4")
+	)
+	(junction
 		(at 237.49 22.86)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3239,12 +3386,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "62eb4c0a-d58b-4758-89ff-5896b37f2a34")
-	)
-	(junction
-		(at 252.73 22.86)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "7904bd21-4326-4e04-8854-3b806868f323")
 	)
 	(junction
 		(at 30.48 55.88)
@@ -3454,6 +3595,16 @@
 	)
 	(wire
 		(pts
+			(xy 69.85 83.82) (xy 71.12 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "31ff5149-8300-44cb-a870-da98a63bfce5")
+	)
+	(wire
+		(pts
 			(xy 200.66 34.29) (xy 205.74 34.29)
 		)
 		(stroke
@@ -3591,6 +3742,16 @@
 			(type default)
 		)
 		(uuid "58448379-e75a-4aa7-80f2-170732bdd3a5")
+	)
+	(wire
+		(pts
+			(xy 86.36 83.82) (xy 88.9 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a70a1be-443a-46f6-9d58-3ebaa655a18d")
 	)
 	(wire
 		(pts
@@ -3894,16 +4055,6 @@
 	)
 	(wire
 		(pts
-			(xy 252.73 22.86) (xy 273.05 22.86)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a7bffe52-d295-447d-a286-0b7954cf8232")
-	)
-	(wire
-		(pts
 			(xy 180.34 22.86) (xy 180.34 26.67)
 		)
 		(stroke
@@ -4014,6 +4165,16 @@
 	)
 	(wire
 		(pts
+			(xy 59.69 83.82) (xy 62.23 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bbb10fac-a895-424e-a9e1-1191d85e22d7")
+	)
+	(wire
+		(pts
 			(xy 35.56 55.88) (xy 41.91 55.88)
 		)
 		(stroke
@@ -4021,6 +4182,16 @@
 			(type default)
 		)
 		(uuid "bc01b8c9-0bc9-4302-b688-d65d886625e0")
+	)
+	(wire
+		(pts
+			(xy 252.73 22.86) (xy 273.05 22.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bd611de3-34c4-4c04-a60c-50960fc6e077")
 	)
 	(wire
 		(pts
@@ -4352,6 +4523,16 @@
 		)
 		(uuid "994e414d-8526-4ae7-807e-35796dc82d51")
 	)
+	(label "Vbus"
+		(at 88.9 83.82 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "afc12b68-e190-4614-b28f-7a7b327cfd84")
+	)
 	(label "SCL"
 		(at 227.33 119.38 180)
 		(effects
@@ -4441,6 +4622,74 @@
 			(justify right bottom)
 		)
 		(uuid "e89f3e1f-0e24-40a5-96e9-35fe515197f0")
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 66.04 83.82 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "043f24ff-1153-4534-8f3f-5192d5abdb34")
+		(property "Reference" "C7"
+			(at 66.04 76.2 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10μF"
+			(at 66.04 78.74 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+			(at 69.85 82.8548 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 66.04 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 66.04 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "a69d2f4a-b438-41ed-8dde-494c2f1dbc96")
+		)
+		(pin "2"
+			(uuid "67015095-bc76-4c3d-89c2-728a6e48a8c4")
+		)
+		(instances
+			(project "USB_PD_Sink_Controller"
+				(path "/402bd669-350c-4e2f-bbb5-342e789ed039"
+					(reference "C7")
+					(unit 1)
+				)
+			)
+		)
 	)
 	(symbol
 		(lib_id "power:GND")
@@ -4909,6 +5158,71 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 78.74 76.2 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3cfc43fa-7ea0-4756-acaa-e3b8a7e38257")
+		(property "Reference" "#PWR07"
+			(at 78.74 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 78.74 72.644 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 78.74 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 78.74 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 78.74 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "614c4119-3876-4e5a-b15e-f11d84050302")
+		)
+		(instances
+			(project "USB_PD_Sink_Controller"
+				(path "/402bd669-350c-4e2f-bbb5-342e789ed039"
+					(reference "#PWR07")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 36.83 101.6 270)
 		(unit 1)
@@ -5174,6 +5488,78 @@
 			(project "USB_PD_Sink_Controller"
 				(path "/402bd669-350c-4e2f-bbb5-342e789ed039"
 					(reference "#PWR06")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Regulator_Linear:LM2937xT")
+		(at 78.74 83.82 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "5b0704a8-d115-444c-9954-bcaa8ba0894f")
+		(property "Reference" "U5"
+			(at 78.74 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LM2937xT"
+			(at 78.74 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_THT:TO-220-3_Vertical"
+			(at 78.74 89.535 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/lm2937.pdf"
+			(at 78.74 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "500-mA Low Dropout Regulator, TO-220"
+			(at 78.74 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "ea1d084d-2be0-4e92-a045-df91db9f6d1a")
+		)
+		(pin "2"
+			(uuid "ecb27725-1d76-429b-8883-210610e79c89")
+		)
+		(pin "3"
+			(uuid "a550f4d6-7ca6-491d-bc25-051f60fa7b53")
+		)
+		(instances
+			(project ""
+				(path "/402bd669-350c-4e2f-bbb5-342e789ed039"
+					(reference "U5")
 					(unit 1)
 				)
 			)
@@ -6939,7 +7325,8 @@
 	)
 	(symbol
 		(lib_id "Connector:Conn_01x02_Socket")
-		(at 278.13 22.86 0)
+		(at 278.13 25.4 0)
+		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -6956,7 +7343,7 @@
 			)
 		)
 		(property "Value" "JST_01x02_Socket"
-			(at 265.938 19.304 0)
+			(at 265.938 28.956 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6965,7 +7352,7 @@
 			)
 		)
 		(property "Footprint" "Connector_JST:JST_XH_B2B-XH-AM_1x02_P2.50mm_Vertical"
-			(at 278.13 22.86 0)
+			(at 278.13 25.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6974,7 +7361,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 278.13 22.86 0)
+			(at 278.13 25.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6983,7 +7370,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x02, script generated"
-			(at 278.13 22.86 0)
+			(at 278.13 25.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
