@@ -170,7 +170,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Connector:Conn_01x05_Socket"
+		(symbol "Connector:Conn_01x06_Socket"
 			(pin_names
 				(offset 1.016)
 				(hide yes)
@@ -186,8 +186,8 @@
 					)
 				)
 			)
-			(property "Value" "Conn_01x05_Socket"
-				(at 0 -7.62 0)
+			(property "Value" "Conn_01x06_Socket"
+				(at 0 -10.16 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -212,7 +212,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Generic connector, single row, 01x05, script generated"
+			(property "Description" "Generic connector, single row, 01x06, script generated"
 				(at 0 0 0)
 				(effects
 					(font
@@ -247,7 +247,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "Conn_01x05_Socket_1_1"
+			(symbol "Conn_01x06_Socket_1_1"
 				(polyline
 					(pts
 						(xy -1.27 5.08) (xy -0.508 5.08)
@@ -299,6 +299,18 @@
 				(polyline
 					(pts
 						(xy -1.27 -5.08) (xy -0.508 -5.08)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 -7.62) (xy -0.508 -7.62)
 					)
 					(stroke
 						(width 0.1524)
@@ -360,6 +372,18 @@
 					(start 0 -5.588)
 					(mid -0.5058 -5.08)
 					(end 0 -4.572)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0 -8.128)
+					(mid -0.5058 -7.62)
+					(end 0 -7.112)
 					(stroke
 						(width 0.1524)
 						(type default)
@@ -451,6 +475,24 @@
 						)
 					)
 					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -7.62 0)
+					(length 3.81)
+					(name "Pin_6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -3601,6 +3643,12 @@
 		(uuid "9d789aa2-0696-419c-a73e-5f8c721d2a6d")
 	)
 	(junction
+		(at 191.77 22.86)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "9f14dfbc-7d7a-4085-919d-f973fb47bde5")
+	)
+	(junction
 		(at 78.74 40.64)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3685,6 +3733,16 @@
 			(type default)
 		)
 		(uuid "0487cb7f-3be5-4d61-93af-5602a82b9b5b")
+	)
+	(wire
+		(pts
+			(xy 55.88 161.29) (xy 55.88 163.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "05946c20-191f-454b-b60c-cb5dd9841178")
 	)
 	(wire
 		(pts
@@ -3858,7 +3916,17 @@
 	)
 	(wire
 		(pts
-			(xy 180.34 22.86) (xy 195.58 22.86)
+			(xy 45.72 161.29) (xy 45.72 163.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3ab982bd-bbd8-4ce3-9774-5a5c9289e42b")
+	)
+	(wire
+		(pts
+			(xy 180.34 22.86) (xy 191.77 22.86)
 		)
 		(stroke
 			(width 0)
@@ -4008,6 +4076,16 @@
 	)
 	(wire
 		(pts
+			(xy 48.26 161.29) (xy 48.26 163.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "69d66545-d192-4d34-a852-da555463fa20")
+	)
+	(wire
+		(pts
 			(xy 226.06 124.46) (xy 228.6 124.46)
 		)
 		(stroke
@@ -4098,6 +4176,16 @@
 	)
 	(wire
 		(pts
+			(xy 191.77 22.86) (xy 191.77 36.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8e7350e6-061e-4c8a-bd8c-0933add7ded7")
+	)
+	(wire
+		(pts
 			(xy 78.74 40.64) (xy 83.82 40.64)
 		)
 		(stroke
@@ -4164,17 +4252,17 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "95ebc1ef-4b47-43b7-b23f-4742ae43a120")
+		(uuid "9624b6c4-e2ef-4f15-b0a4-b32511c21d55")
 	)
 	(wire
 		(pts
-			(xy 55.88 161.29) (xy 55.88 163.83)
+			(xy 191.77 22.86) (xy 195.58 22.86)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "9624b6c4-e2ef-4f15-b0a4-b32511c21d55")
+		(uuid "965d390c-9661-470a-9141-eb88dc76c0a8")
 	)
 	(wire
 		(pts
@@ -4238,16 +4326,6 @@
 	)
 	(wire
 		(pts
-			(xy 48.26 161.29) (xy 48.26 163.83)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a608a83b-0d00-49cc-855d-499ddcbdaab8")
-	)
-	(wire
-		(pts
 			(xy 180.34 22.86) (xy 180.34 26.67)
 		)
 		(stroke
@@ -4295,6 +4373,16 @@
 			(type default)
 		)
 		(uuid "ad51e66e-a335-42ea-a3d9-88be6f9f6a5b")
+	)
+	(wire
+		(pts
+			(xy 73.66 88.9) (xy 72.39 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b1ad1fcf-85c9-44b7-82ec-5d1d1cf6fea4")
 	)
 	(wire
 		(pts
@@ -4458,16 +4546,6 @@
 	)
 	(wire
 		(pts
-			(xy 50.8 161.29) (xy 50.8 163.83)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "db1de949-4aea-481a-9931-6d2f77afc208")
-	)
-	(wire
-		(pts
 			(xy 260.35 109.22) (xy 264.16 109.22)
 		)
 		(stroke
@@ -4558,6 +4636,16 @@
 	)
 	(wire
 		(pts
+			(xy 50.8 161.29) (xy 50.8 163.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f9b2add5-f84b-49d5-bc96-579369f22c3b")
+	)
+	(wire
+		(pts
 			(xy 252.73 33.02) (xy 252.73 22.86)
 		)
 		(stroke
@@ -4575,6 +4663,16 @@
 			(justify right bottom)
 		)
 		(uuid "07e1cc05-eda8-4d85-a87c-2a6833cdd472")
+	)
+	(label "3V3"
+		(at 73.66 88.9 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "0ad6e1a5-1506-481e-83e0-fb897d8410ef")
 	)
 	(label "DISCH"
 		(at 243.84 46.99 0)
@@ -4596,7 +4694,7 @@
 		)
 		(uuid "15fb28f7-166a-4c08-aadd-245ef56d39b0")
 	)
-	(label "VSYS"
+	(label "3V3"
 		(at 245.11 81.28 90)
 		(effects
 			(font
@@ -4604,7 +4702,7 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "30dead39-3f62-4df7-ad3a-a5d783d37711")
+		(uuid "1b1a759e-6719-4568-948d-edbbf85ef86e")
 	)
 	(label "CC1"
 		(at 83.82 38.1 0)
@@ -4667,7 +4765,7 @@
 		(uuid "457a3271-65cc-45f5-94a9-9a6bacd8eeee")
 	)
 	(label "ALERT_{PU}"
-		(at 50.8 161.29 90)
+		(at 48.26 161.29 90)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4737,7 +4835,7 @@
 		(uuid "7b90e4a1-3822-422a-a27c-fdba1c9f0520")
 	)
 	(label "SCL_{PU}"
-		(at 53.34 161.29 90)
+		(at 50.8 161.29 90)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4766,6 +4864,16 @@
 		)
 		(uuid "a9f6a346-3f89-4d8b-9fe0-5e4fb5c7336c")
 	)
+	(label "VDD"
+		(at 191.77 36.83 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "af0ed9ec-5d7d-4e41-a338-152b4c2569a8")
+	)
 	(label "Vbus"
 		(at 34.29 78.74 0)
 		(effects
@@ -4785,6 +4893,16 @@
 			(justify right bottom)
 		)
 		(uuid "b00cd8ce-e801-487e-81e6-e21bfda3b391")
+	)
+	(label "3V3"
+		(at 55.88 161.29 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b64fb9de-1f29-4eb4-8bce-4c5cee3be7a1")
 	)
 	(label "Vbus"
 		(at 60.96 25.4 0)
@@ -4877,7 +4995,7 @@
 		(uuid "e89f3e1f-0e24-40a5-96e9-35fe515197f0")
 	)
 	(label "SDA_{PU}"
-		(at 55.88 161.29 90)
+		(at 53.34 161.29 90)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4897,7 +5015,7 @@
 		(uuid "ee8fb54e-1d6b-4176-8159-a853c1f19c33")
 	)
 	(label "RESET"
-		(at 48.26 161.29 90)
+		(at 45.72 161.29 90)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5373,7 +5491,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector:Conn_01x05_Socket")
+		(lib_id "Connector:Conn_01x06_Socket")
 		(at 53.34 168.91 270)
 		(unit 1)
 		(exclude_from_sim no)
@@ -5383,7 +5501,7 @@
 		(fields_autoplaced yes)
 		(uuid "2789ec96-635a-443f-9d91-a178c7a0fe36")
 		(property "Reference" "J3"
-			(at 53.34 171.45 90)
+			(at 52.07 171.45 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5391,7 +5509,7 @@
 			)
 		)
 		(property "Value" "JST_01x05_Socket"
-			(at 53.34 173.99 90)
+			(at 52.07 173.99 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5439,6 +5557,9 @@
 		)
 		(pin "3"
 			(uuid "523e0a76-423e-449b-a7b0-c1534f9cbbc9")
+		)
+		(pin "6"
+			(uuid "cc6786f1-768e-46a3-a8e6-1ddf07ded1c4")
 		)
 		(instances
 			(project ""
