@@ -5288,7 +5288,7 @@
 			(uuid "4dc6c239-1fae-4dc8-a9dd-9640fcfd1537")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 5 3.45 0)
+			(at 1 5.5 0)
 			(layer "F.Fab")
 			(uuid "50780f0c-513e-4334-98b2-1a505d568a80")
 			(effects
@@ -7121,13 +7121,13 @@
 		(layer "Edge.Cuts")
 		(uuid "1c010d65-2050-40aa-a654-7f75ef16f24c")
 	)
-	(gr_text "ALT"
-		(at 356.1 123.2 90)
+	(gr_text "RST"
+		(at 356.25 123.25 90)
 		(layer "B.SilkS")
 		(uuid "11e1dbb8-200d-42c0-b107-f7bed7a4cdca")
 		(effects
 			(font
-				(size 1 1)
+				(size 0.8 0.8)
 				(thickness 0.1)
 			)
 			(justify left bottom mirror)
@@ -7147,72 +7147,72 @@
 		)
 	)
 	(gr_text "VBUS"
-		(at 356.1 116.3 90)
+		(at 353.25 117.75 90)
 		(layer "B.SilkS")
 		(uuid "3a58b480-563a-4d8f-96eb-0c23bc9df565")
 		(effects
 			(font
-				(size 1 1)
+				(size 0.6 0.6)
 				(thickness 0.1)
 			)
 			(justify left bottom mirror)
 		)
 	)
 	(gr_text "VDD"
-		(at 348.5 123 90)
+		(at 348.5 123.5 90)
 		(layer "B.SilkS")
 		(uuid "5539a945-653d-4968-851a-ac84e0f4e94a")
 		(effects
 			(font
-				(size 1 1)
+				(size 0.8 0.8)
 				(thickness 0.1)
 			)
 			(justify left bottom mirror)
 		)
 	)
 	(gr_text "GND"
-		(at 346 122.9 90)
+		(at 346 123.25 90)
 		(layer "B.SilkS")
 		(uuid "7cae0427-9b0f-4e9a-8a7f-9827c85d6c78")
 		(effects
 			(font
-				(size 1 1)
+				(size 0.8 0.8)
 				(thickness 0.1)
 			)
 			(justify left bottom mirror)
 		)
 	)
 	(gr_text "GND"
-		(at 353.6 116.3 90)
+		(at 355.75 117.75 90)
 		(layer "B.SilkS")
 		(uuid "90113893-5373-4ab4-bae5-3efeeea359ad")
 		(effects
 			(font
-				(size 1 1)
+				(size 0.6 0.6)
 				(thickness 0.1)
 			)
 			(justify left bottom mirror)
 		)
 	)
 	(gr_text "SDA"
-		(at 351.1 122.9 90)
+		(at 351 123.25 90)
 		(layer "B.SilkS")
 		(uuid "9d8a53ba-b131-408f-b796-a3e3986d4714")
 		(effects
 			(font
-				(size 1 1)
+				(size 0.8 0.8)
 				(thickness 0.1)
 			)
 			(justify left bottom mirror)
 		)
 	)
 	(gr_text "SCL"
-		(at 353.6 122.9 90)
+		(at 353.75 123.25 90)
 		(layer "B.SilkS")
 		(uuid "cf8bc555-002f-4c5c-92ae-d3abb62f0eb7")
 		(effects
 			(font
-				(size 1 1)
+				(size 0.8 0.8)
 				(thickness 0.1)
 			)
 			(justify left bottom mirror)
