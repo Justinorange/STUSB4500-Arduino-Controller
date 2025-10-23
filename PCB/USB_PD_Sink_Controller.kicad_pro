@@ -124,7 +124,7 @@
       },
       "rules": {
         "max_error": 0.005,
-        "min_clearance": 0.1016,
+        "min_clearance": 0.102,
         "min_connection": 0.0,
         "min_copper_edge_clearance": 0.1016,
         "min_groove_width": 0.0,
@@ -444,7 +444,7 @@
       "no_connect_dangling": "warning",
       "pin_not_connected": "error",
       "pin_not_driven": "error",
-      "pin_to_pin": "warning",
+      "pin_to_pin": "error",
       "power_pin_not_driven": "error",
       "same_local_global_label": "warning",
       "similar_label_and_power": "warning",
