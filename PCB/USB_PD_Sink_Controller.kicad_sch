@@ -3977,16 +3977,6 @@
 	)
 	(wire
 		(pts
-			(xy 34.29 101.6) (xy 36.83 101.6)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "67bf6eb9-7653-46ba-bf7b-0d18905e4f40")
-	)
-	(wire
-		(pts
 			(xy 45.72 40.64) (xy 78.74 40.64)
 		)
 		(stroke
@@ -4654,16 +4644,6 @@
 			(justify left bottom)
 		)
 		(uuid "3fcd2151-db04-4348-9aec-917eb70d7c5c")
-	)
-	(label "ALERT"
-		(at 34.29 101.6 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "4188fc94-1635-4e94-8d5a-5018612afff7")
 	)
 	(label "VDD"
 		(at 252.73 63.5 0)
